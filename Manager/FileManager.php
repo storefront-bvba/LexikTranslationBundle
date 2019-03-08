@@ -3,6 +3,7 @@
 namespace Lexik\Bundle\TranslationBundle\Manager;
 
 use Lexik\Bundle\TranslationBundle\Storage\StorageInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Manager for translations files.
@@ -40,7 +41,8 @@ class FileManager implements FileManagerInterface
     public function getFor($name, $path = null)
     {
         if (null === $path) {
-            $path = sprintf('%s/Resources/translations', $this->rootDir);
+            $path = sprintf(Kernel::MAJOR_VERSION >= 4 ? '%s/../translations' : '%s/Resources/translations',
+                            $this->rootDir);
         }
 
         $hash = $this->generateHash($name, $this->getFileRelativePath($path));

@@ -179,6 +179,11 @@ class TransUnitManager implements TransUnitManagerInterface
                 } else {
                     //We need to get a proper file for this translation
                     $file = $this->getTranslationFile($transUnit, $locale);
+                    if(!$file){
+                        //make sure we got the correct file for this locale and domain
+                        $name = sprintf('%s.%s.%s', $transUnit->getDomain(), $locale, 'xlf');
+                        $file = $this->fileManager->getFor($name);
+                    }
                     $translation = $this->addTranslation($transUnit, $locale, $content, $file);
                 }
 
