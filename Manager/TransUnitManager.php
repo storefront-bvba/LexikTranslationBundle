@@ -143,6 +143,15 @@ class TransUnitManager implements TransUnitManagerInterface
             }
 
             $translation->setContent($content);
+            if(!$translation->getFile()){
+            	$file = $this->getTranslationFile($transUnit, $locale);
+	            if(!$file){
+		            //make sure we got the correct file for this locale and domain
+		            $name = sprintf('%s.%s.%s', $transUnit->getDomain(), $locale, 'xlf');
+		            $file = $this->fileManager->getFor($name);
+	            }
+            	$translation->setFile($file);
+            }
         }
 
         if (null !== $translation && $this->storage instanceof PropelStorage) {
